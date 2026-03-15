@@ -81,7 +81,9 @@ nav {
   color:var(--mid); text-decoration:none;
 }
 
-/* ── HERO ── */
+/* ══════════════════════════════
+   HERO
+══════════════════════════════ */
 #hero {
   padding: 140px 3rem 80px;
   border-bottom: 1px solid var(--border);
@@ -104,6 +106,8 @@ nav {
   color: var(--green);
   display: flex; align-items: center; gap: 0.8rem;
   margin-bottom: 1.8rem;
+  opacity: 0;
+  animation: fadeSlideUp 0.6s ease 0.05s forwards;
 }
 .hero-tag::before {
   content: '';
@@ -112,17 +116,57 @@ nav {
   background: var(--green);
 }
 
+/* ── HERO NAME — SPLIT REVEAL ── */
 h1.hero-name {
   font-family: 'Syne', sans-serif;
   font-size: clamp(4rem, 8vw, 8.5rem);
   font-weight: 800;
   line-height: 0.92;
   letter-spacing: -0.03em;
-  color: var(--ink);
   text-transform: uppercase;
+  margin-bottom: 2rem;
 }
-h1.hero-name span { color: var(--green); }
 
+.name-row {
+  display: block;
+  overflow: hidden;
+  line-height: 1.05;
+}
+
+.name-row-inner {
+  display: inline-flex;
+}
+
+.name-left {
+  display: inline-block;
+  transform: translateX(-110%);
+  opacity: 0;
+  animation: splitLeft 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.name-right {
+  display: inline-block;
+  transform: translateX(110%);
+  opacity: 0;
+  animation: splitRight 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.name-row:nth-child(1) .name-left,
+.name-row:nth-child(1) .name-right { animation-delay: 0.1s; color: var(--ink); }
+
+.name-row:nth-child(2) .name-left,
+.name-row:nth-child(2) .name-right { animation-delay: 0.28s; color: var(--ink); }
+
+.name-row:nth-child(3) .name-left,
+.name-row:nth-child(3) .name-right { animation-delay: 0.46s; color: var(--green); }
+
+@keyframes splitLeft {
+  to { transform: translateX(0); opacity: 1; }
+}
+@keyframes splitRight {
+  to { transform: translateX(0); opacity: 1; }
+}
+
+/* bio + buttons slide up after name */
 .hero-right {
   max-width: 520px;
   padding-top: 1.5rem;
@@ -132,8 +176,19 @@ h1.hero-name span { color: var(--green); }
   line-height: 1.85;
   color: var(--mid);
   margin-bottom: 2.5rem;
+  opacity: 0;
+  animation: fadeSlideUp 0.6s ease 0.7s forwards;
 }
-.hero-btns { display:flex; gap:1.2rem; flex-wrap:wrap; }
+.hero-btns {
+  display:flex; gap:1.2rem; flex-wrap:wrap;
+  opacity: 0;
+  animation: fadeSlideUp 0.6s ease 0.85s forwards;
+}
+
+@keyframes fadeSlideUp {
+  from { opacity:0; transform:translateY(18px); }
+  to   { opacity:1; transform:translateY(0); }
+}
 
 .btn-solid {
   display: inline-block;
@@ -164,6 +219,8 @@ h1.hero-name span { color: var(--green); }
   grid-template-columns: repeat(4, 1fr);
   border-top: 1px solid var(--border);
   padding-top: 2.5rem;
+  opacity: 0;
+  animation: fadeSlideUp 0.6s ease 1s forwards;
 }
 .strip-item {
   padding-right: 2.5rem;
@@ -464,32 +521,95 @@ footer {
   letter-spacing: 0.05em;
 }
 
-/* ── FADE IN ── */
+/* ── SCROLL FADE IN (non-hero sections) ── */
 .fade { opacity:0; transform:translateY(20px); transition:opacity 0.55s ease, transform 0.55s ease; }
 .fade.in { opacity:1; transform:translateY(0); }
 
-/* ── RESPONSIVE ── */
-@media(max-width:960px) {
-  .hero-strip { grid-template-columns:1fr 1fr; gap:2rem; }
-  .strip-item { border-right:none !important; padding:0 !important; }
-  .contact-body { grid-template-columns:1fr; }
-  .contact-left { border-right:none; border-bottom:1px solid var(--border); }
-  .exp-block { grid-template-columns:1fr; gap:2rem; }
-  .skill-row { grid-template-columns:1fr; gap:1rem; }
+/* ══ LAPTOP (<=1100px) ══ */
+@media(max-width:1100px){
+  .hero-top{gap:2.5rem;}
+  .exp-block{gap:3rem;}
 }
-@media(max-width:680px) {
-  .nav-links { display:none; }
-  .hbg { display:flex; }
-  .nav-row, .sec-head, .sec-body, .ach-item, .proj-item { padding-left:1.5rem; padding-right:1.5rem; }
-  #hero { padding:110px 1.5rem 3rem; }
-  .hero-strip { grid-template-columns:1fr 1fr; gap:1.5rem; }
-  .exp-block { padding:2.5rem 1.5rem; }
-  .contact-left, .contact-right { padding:3rem 1.5rem; }
-  footer { padding:1.5rem; flex-direction:column; gap:0.4rem; text-align:center; }
-  .proj-item { grid-template-columns:1fr; }
-  .proj-index { display:none; }
-  .ach-item { grid-template-columns:1fr; gap:0.8rem; }
-  .ach-badge { align-self:flex-start; }
+
+/* ══ TABLET (<=900px) ══ */
+@media(max-width:900px){
+  html{font-size:17px;}
+  .nav-links{gap:1.5rem;}
+  .nav-links a{font-size:0.78rem;}
+  #hero{padding:120px 2rem 60px;}
+  .hero-top{flex-direction:column;gap:2.5rem;margin-bottom:3.5rem;}
+  .hero-right{max-width:100%;padding-top:0;}
+  .hero-bio{font-size:1.05rem;}
+  .hero-strip{grid-template-columns:1fr 1fr;gap:1.5rem 0;padding-top:2rem;}
+  .strip-item{border-right:none !important;padding:0 0 1.5rem 0 !important;border-bottom:1px solid var(--border);}
+  .strip-item:nth-child(3),.strip-item:nth-child(4){padding-bottom:0 !important;border-bottom:none;}
+  .sec-head{padding:2rem;}
+  .sec-body{padding:2rem;}
+  .sec-title{font-size:1.8rem;}
+  .skill-row{grid-template-columns:1fr;gap:0.8rem;padding:1.4rem 0;}
+  .proj-item{grid-template-columns:60px 1fr;gap:1.5rem;padding:2.5rem 2rem;}
+  .proj-index{font-size:2.5rem;}
+  .proj-name{font-size:1.4rem;}
+  .ach-item{padding:2rem;}
+  .ach-name{font-size:1.1rem;}
+  .exp-block{grid-template-columns:1fr;gap:2rem;padding:2.5rem 2rem;}
+  .contact-body{grid-template-columns:1fr;}
+  .contact-left{border-right:none;border-bottom:1px solid #222;padding:3.5rem 2rem;}
+  .contact-right{padding:3.5rem 2rem;}
+  footer{padding:1.5rem 2rem;}
+}
+
+/* ══ MOBILE (<=600px) ══ */
+@media(max-width:600px){
+  html{font-size:16px;}
+  .nav-links{display:none;}
+  .hbg{display:flex;}
+  .nav-row{padding:0 1.2rem;}
+  .nav-logo{font-size:0.95rem;}
+  #hero{padding:100px 1.2rem 50px;}
+  .hero-tag{font-size:0.75rem;margin-bottom:1.2rem;}
+  .hero-tag::before{width:24px;}
+  h1.hero-name{font-size:clamp(3rem,14vw,4.5rem);}
+  .hero-bio{font-size:0.95rem;line-height:1.75;margin-bottom:2rem;}
+  .hero-btns{flex-direction:column;gap:0.8rem;}
+  .btn-solid,.btn-border{text-align:center;padding:1rem 1.5rem;width:100%;display:block;}
+  .hero-strip{grid-template-columns:1fr 1fr;gap:1.2rem 1rem;padding-top:1.8rem;}
+  .strip-item{padding-bottom:1.2rem !important;}
+  .strip-label{font-size:0.65rem;}
+  .strip-val{font-size:0.88rem;}
+  .sec-head{padding:1.4rem 1.2rem;gap:1rem;}
+  .sec-body{padding:1.5rem 1.2rem;}
+  .sec-title{font-size:1.4rem;}
+  .sec-num{font-size:0.7rem;}
+  .skill-row{padding:1.2rem 0;gap:0.6rem;}
+  .skill-cat{font-size:0.78rem;}
+  .chip{font-size:0.85rem;padding:0.4rem 0.9rem;}
+  .proj-item{grid-template-columns:1fr;gap:0;padding:1.8rem 1.2rem;}
+  .proj-index{display:none;}
+  .proj-name{font-size:1.15rem;}
+  .proj-date{font-size:0.72rem;}
+  .proj-desc{font-size:0.92rem;}
+  .proj-tag{font-size:0.68rem;padding:0.3rem 0.7rem;}
+  .ach-item{grid-template-columns:1fr;gap:0.7rem;padding:1.5rem 1.2rem;}
+  .ach-item:hover{padding-left:1.2rem;}
+  .ach-name{font-size:1rem;}
+  .ach-sub{font-size:0.88rem;}
+  .ach-badge{align-self:flex-start;font-size:0.68rem;padding:0.35rem 0.9rem;}
+  .exp-block{padding:2rem 1.2rem;gap:1.5rem;}
+  .exp-company{font-size:1.5rem;}
+  .exp-role{font-size:1rem;margin-bottom:1.4rem;}
+  .exp-pt{font-size:0.92rem;}
+  .contact-heading{font-size:2rem;}
+  .contact-sub{font-size:0.95rem;}
+  .clink{font-size:0.88rem;}
+  .contact-left,.contact-right{padding:2.5rem 1.2rem;}
+  .fi,.ft{font-size:0.95rem;padding:0.85rem 1rem;}
+  .btn-send{width:100%;text-align:center;padding:1rem;}
+  footer{padding:1.2rem;flex-direction:column;gap:0.3rem;text-align:center;}
+  .foot-name{font-size:0.88rem;}
+  .foot-right{font-size:0.75rem;}
+  .mob-nav{padding:1.5rem 1.2rem;}
+  .mob-nav a{font-size:0.9rem;}
 }
 </style>
 </head>
@@ -519,10 +639,14 @@ footer {
 
 <!-- HERO -->
 <section id="hero">
-  <div class="hero-top fade">
+  <div class="hero-top">
     <div>
       <div class="hero-tag">AI &amp; Machine Learning Engineer</div>
-      <h1 class="hero-name">Tejas<br>Krishna<br><span>A S</span></h1>
+      <h1 class="hero-name">
+        <span class="name-row"><span class="name-row-inner"><span class="name-left">Te</span><span class="name-right">jas</span></span></span>
+        <span class="name-row"><span class="name-row-inner"><span class="name-left">Kris</span><span class="name-right">hna</span></span></span>
+        <span class="name-row"><span class="name-row-inner"><span class="name-left">A</span><span class="name-right">&nbsp;S</span></span></span>
+      </h1>
     </div>
     <div class="hero-right">
       <p class="hero-bio">B.E. student in Artificial Intelligence &amp; Machine Learning at BGSCET, Bengaluru. Hands-on experience in data science, ML pipelines, deep learning, and generative AI — building systems that turn data into real decisions.</p>
@@ -532,7 +656,7 @@ footer {
       </div>
     </div>
   </div>
-  <div class="hero-strip fade" style="transition-delay:.1s">
+  <div class="hero-strip">
     <div class="strip-item">
       <div class="strip-label">Degree</div>
       <div class="strip-val">B.E. AI &amp; ML · 2022–2026</div>
@@ -716,16 +840,19 @@ footer {
 </footer>
 
 <script>
+  // Hamburger
   const hbg = document.getElementById('hbg');
   const mob = document.getElementById('mobNav');
   hbg.addEventListener('click', () => { hbg.classList.toggle('open'); mob.classList.toggle('open'); });
   function closeM() { hbg.classList.remove('open'); mob.classList.remove('open'); }
 
+  // Scroll fade-in for non-hero sections
   const obs = new IntersectionObserver(entries => {
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); } });
   }, { threshold: 0.06 });
   document.querySelectorAll('.fade').forEach(el => obs.observe(el));
 
+  // Form
   function handleForm(e) {
     e.preventDefault();
     const btn = document.getElementById('fBtn');
